@@ -3,6 +3,7 @@ import cors from "cors";
 import { dbConnection } from '../../database/dbConnection.js';
 import { AppError } from '../utils/catchError.js';
 import { globalError } from '../utils/globalError.js';
+import * as allRouters from './index.js'
 
 export const bootstrap = (app) => {
   process.on("uncaughtException", (err) => {
@@ -13,6 +14,8 @@ export const bootstrap = (app) => {
   app.use(cors());
   dbConnection();
 
+  app.use("/api/auth", allRouters.authRouter);
+  app.use("/api/admin", allRouters.adminRouter);
   
   app.use("*", (req, res, next) => {
     next(new AppError(`Route Not Found ${req.originalUrl}`, 404));
