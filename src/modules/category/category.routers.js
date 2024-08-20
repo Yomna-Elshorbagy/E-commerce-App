@@ -21,6 +21,6 @@ categoryRouter
   .put(
     auth,isAuthorized([roles.ADMIN, roles.SELLER]),
     uploadSingleFile('image', 'categories'),
-    validate( updateCategoryVal ),categoryControllers.updateCategory)
-
+    validate( updateCategoryVal ),categoryControllers.updateCategoryCloud)
+  .delete(auth,isAuthorized([roles.ADMIN, roles.SELLER]),categoryControllers.deleteCategory);
 export default categoryRouter;

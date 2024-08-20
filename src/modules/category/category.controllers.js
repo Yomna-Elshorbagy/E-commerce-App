@@ -166,6 +166,44 @@ export const addCategoryCloud = catchAsyncError(async (req, res, next) => {
   });
 });
 
+export const deleteCategoryCloud = catchAsyncError(async (req, res, next) => {
+  const { id } = req.params;
+  let categoryExisist = await Category.findByIdAndDelete(id);
+  if (!categoryExisist) return next(new AppError(messages.category.notFound, 404));
+
+  //prepare ids
+  const subcategories = await SubCategory.find({ category: id }).select('image');
+  const products = await Product.find({ category: id }).select('imageCover subImages');
+  const imagePaths =[]
+  const subcategoriyIds = []
+    subcategories.forEach(sub => {
+    imagePaths.push(prod.imageCover)
+    subcategoriyIds.push(sub._id) 
+  })
+  const productIds = []
+    products.forEach(prod => {
+    imagePaths.push(prod.imageCover)
+    imagePaths.push(...prod.subImages)
+    productIds.push(prod._id)
+  })
+  await SubCategory.deleteMany({_id: {$in: subcategoriyIds}}) 
+  await Product.deleteMany({_id: {$in: productIds}}) 
+
+  for(let i =0 ; i< imagePaths.length ; i++){
+    if (typeof(imagePaths[i] === "string")){
+      deleteFile(imagePaths)
+    }else{
+      await cloudinary.uploader.destroy(imagePaths[i].puplic_id)
+    }
+  }
+
+    res.status(200).json({ 
+        message: messages.category.deletedSucessfully, 
+        sucess: true ,
+        data: deleteCategory 
+      });
+});
+
 export const updateCategoryCloud = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
   const { name } = req.body;

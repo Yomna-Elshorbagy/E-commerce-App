@@ -40,5 +40,6 @@ export const messages = {
     empty: "cart empty"
   },
   review: generateMessage("review"),
-  order: generateMessage("order"),
-};
+  order: {...generateMessage("order"),
+    canceledSuccessfully: "order canceled Sucessfully"
+  }};
