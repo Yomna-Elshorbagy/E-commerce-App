@@ -18,6 +18,7 @@ export const bootstrap = (app) => {
   app.use("/api/admin", allRouters.adminRouter);
   app.use("/api/user", allRouters.userRouter);
   app.use("/api/categories", allRouters.categoryRouter);
+  app.use("/api/subcategories", allRouters.subCategoryRouter);
   app.use("/api/brands", allRouters.brnadRouter);
 
   app.use("*", (req, res, next) => {
