@@ -4,7 +4,7 @@ import { status } from './constant/enums.js';
 import cloudinary from './fileUpload/cloudinary.js';
 import Coupon from '../../database/models/coupon.model.js';
 
-export const scheduleUserClenup = ()=>{
+export const scheduleUserCleanup = ()=>{
     schedule.scheduleJob('1 1 1 * * *', async function(){
         const users = await User.find({status: status.PENDING, createdAt:{$lte: Date.now() - 30 * 24 * 60 * 60 * 1000}}).lean()
         const userIds = users.map((user)=>{return user._id})

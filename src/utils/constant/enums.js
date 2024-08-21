@@ -19,3 +19,18 @@ export const couponTypes = {
     PERCENTAGE: "percentage",
 };
 Object.freeze(couponTypes)
+
+export const orderStatus = {
+    PLACED: "placed",
+    SHIPPING: "shipping",
+    DELIVERED: "delivered",
+    CANCELED: "canceled",
+    REFUNDED:"refund",
+};
+Object.freeze(orderStatus)
+
+export const payments = {
+    CASH: "cash",
+    VISA: "visa"
+};
+Object.freeze(payments);
