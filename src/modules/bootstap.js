@@ -21,6 +21,8 @@ export const bootstrap = (app) => {
   app.use("/api/subcategories", allRouters.subCategoryRouter);
   app.use("/api/products", allRouters.productRouter);
   app.use("/api/brands", allRouters.brnadRouter);
+  app.use("/api/reviews", allRouters.reviewRouter);
+  app.use("/api/coupons", allRouters.couponRouter);
 
   app.use("*", (req, res, next) => {
     next(new AppError(`Route Not Found ${req.originalUrl}`, 404));
