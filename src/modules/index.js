@@ -7,6 +7,7 @@ import subCategoryRouter from "./subCategory/subCategory.routers.js";
 import productRouter from "./product/product.routers.js";
 import reviewRouter from "./reviews/review.routers.js";
 import couponRouter from "./coupon/coupon.routers.js";
+import wishlistRouter from "./wishlist/wishlist.Routers.js";
 
 export {
   adminRouter,
@@ -17,5 +18,6 @@ export {
   subCategoryRouter,
   productRouter,
   reviewRouter,
-  couponRouter
+  couponRouter,
+  wishlistRouter
 };
