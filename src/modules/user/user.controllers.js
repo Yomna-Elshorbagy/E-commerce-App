@@ -1,3 +1,4 @@
+import Token from "../../../database/models/token.model.js";
 import User from "../../../database/models/user.model.js";
 import { AppError, catchAsyncError } from "../../utils/catchError.js";
 import { status } from "../../utils/constant/enums.js";
@@ -29,9 +30,12 @@ export const resetPassword = catchAsyncError(async (req, res, next) => {
     { _id: userId },
     {
       password: hashPass,
+      passwordChangedAt: Date.now()
     },
     { new: true }
   );
+  await Token.updateMany({ userId: user._id }, { isValid: false });
+
   updatedUser.password = undefined;
   res.status(200).json({
     message: messages.user.updatedSucessfully,

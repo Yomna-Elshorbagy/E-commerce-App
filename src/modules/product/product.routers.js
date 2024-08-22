@@ -26,8 +26,13 @@ productRouter
   .route("/:id")
   .get(productControllers.getSpeificproduct)
   .put(
+    auth,
+    isAuthorized([roles.ADMIN, roles.SELLER]),
     uploadMixFiles([{ name: 'imageCover', maxCount: 1 }, { name: 'images', maxCount: 8 }]) ,
-    productControllers.updateproduct)
-  .delete(productControllers.deleteproduct);
+    productControllers.updateproductCloud)
+  .delete( 
+    auth,
+    isAuthorized([roles.ADMIN, roles.SELLER]),
+    productControllers.deleteproduct);
 
 export default productRouter;

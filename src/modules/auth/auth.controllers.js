@@ -7,6 +7,7 @@ import { generateToken, verifyToken } from "../../utils/token.js";
 import { status } from "../../utils/constant/enums.js";
 import Cart from "../../../database/models/cart.model.js";
 import { generateOTP } from "../../utils/otp.js";
+import Token from "../../../database/models/token.model.js";
 
 export const signup = catchAsyncError(async (req, res, next) => {
   //get data from req
@@ -51,7 +52,7 @@ export const signup = catchAsyncError(async (req, res, next) => {
   let createdUser = await user.save();
   if (!createdUser) return next(new AppError(messages.user.failToCreate, 500));
 
-  const token = generateToken({
+  const token = await generateToken({
     payload: {
       _id: createdUser._id,
       email: createdUser.email,
@@ -70,7 +71,7 @@ export const signup = catchAsyncError(async (req, res, next) => {
 
 export const verifyAccount = catchAsyncError(async (req, res, next) => {
   const { token } = req.params;
-  const decoded = verifyToken({ token, secretKey: process.env.EMAIL_KEY });
+  const decoded = await verifyToken({ token, secretKey: process.env.EMAIL_KEY });
   if (!decoded || !decoded._id) {
     return next(new AppError("Invalid Token or Signature...", 401));
   }
@@ -134,11 +135,10 @@ export const logIn = catchAsyncError(async (req, res, next) => {
   await User.findByIdAndUpdate(userExist._id, {
     isActive: true,
     status: status.VERIFIED,
-    blacklistedTokens : []
   });
   await userExist.save();
 
-  const accessToken = generateToken({
+  const accessToken = await generateToken({
     payload: {
       _id: userExist._id,
       email: userExist.email,
@@ -192,8 +192,10 @@ export const changePassword = catchAsyncError(async (req, res, next) => {
     password : hashPass,
     otpCode: null, 
     otpExpire: null,
-    passwordChangedAt:Date.now()
-    })
+    passwordChangedAt: Date.now()
+    });
+    await Token.updateMany({ userId: user._id }, { isValid: false });
+
   return res.status(200).json({message: messages.pasword.updatedSucessfully, sucess: true});
 });
 
@@ -202,10 +204,11 @@ export const logout = catchAsyncError(async (req, res, next) => {
   const token = req.headers.authentication.split(" ")[1];
 
   await User.findByIdAndUpdate(_id, {
-    $addToSet: { blacklistedTokens: token }, 
     isActive: false,
   });
-
+  await Token.findOneAndUpdate({ token }, {
+    isValid: false,
+  });
   res.status(200).json({
     message: messages.user.loggedOutSuccessfully,
     success: true,

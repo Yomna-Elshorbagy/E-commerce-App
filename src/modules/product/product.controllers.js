@@ -102,7 +102,8 @@ export const updateproduct = catchAsyncError(async (req, res, next) => {
 
 export const updateproductCloud = catchAsyncError(async (req, res, next) => {
   const { id } = req.params;
-  let { title, description, price, discount, stock, category, subcategory, brand, size, colors,
+  let { title, description, price, discount, stock, category, subcategory, brand, size, colors, imageCover,
+    subImages
   } = req.body;
 
   let product = await Product.findById(id);
@@ -207,11 +208,7 @@ export const getproducts = catchAsyncError(async (req, res, next) => {
     .sort()
     .select()
     .filter();
-  console.log("Query:", req.query);
-  console.log("Mongoose Query:", apiFeature.mongooseQuery.getQuery());
-  console.log("Mongoose Options:", apiFeature.mongooseQuery.getOptions());
   const products = await apiFeature.mongooseQuery;
-  console.log("Products:", products);
   return res.json({
     message: messages.coupon.fetchedSuccessfully,
     sucess: true,

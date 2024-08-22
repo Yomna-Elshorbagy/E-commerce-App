@@ -76,10 +76,6 @@ let userSchema = new mongoose.Schema(
         ref: "Product",
       },
     ],
-    blacklistedTokens: {
-      type: [String],
-      default: [],
-    },
     passwordChangedAt: Date,
   },
   {
