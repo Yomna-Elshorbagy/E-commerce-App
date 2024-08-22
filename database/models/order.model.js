@@ -16,7 +16,8 @@ const orderSchema = new Schema({
             title: String,
             price: Number,
             quentity: Number,
-            finalPrice: Number
+            discount: Number,
+            final_Price: Number,
         }
     ],
     address:{ type: String, require: true},
@@ -34,6 +35,7 @@ const orderSchema = new Schema({
     payment:{
         type: String,
         enum: Object.values(payments),
+        default: payments.CASH,
         required: true
     },
     orderPrice: Number,

@@ -3,6 +3,7 @@ export const roles = {
     CUSTOMER: "customer",
     ADMIN: "admin",
     SELLER: "seller",
+    DELIVARY: "delivary"
 };
 Object.freeze(roles)
 
