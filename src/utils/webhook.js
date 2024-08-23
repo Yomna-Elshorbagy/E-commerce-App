@@ -9,10 +9,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 //webhook function :
 export const webhookStripe = catchAsyncError(async (req, res) => {
     const sig = req.headers['stripe-signature'].toString()
-  
+    let checkout;
     let event = stripe.webhooks.constructEvent(req.body, sig, "whsec_XNU4ttjydEf4fPsgFTBYT3ByzcA2qheq");
        if (event.type == "checkout.session.completed") {
-        const checkout = event.data.object;
+        checkout = event.data.object;
         //update order status placed
         const orderId = checkout.metadata.orderId;
         const orderExist = await Order.findByIdAndUpdate(orderId,{
