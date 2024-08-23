@@ -1,12 +1,13 @@
 import express from "express";
+import { json } from 'express';
+import cors from "cors";
 import { bootstrap } from "./src/modules/bootstap.js";
-import { scheduleUserCleanup } from "./src/utils/cleanup-jobs.js";
 
 const app = express();
 
-scheduleUserCleanup();
-
 const port = process.env.PORT || 3000;
+app.use(json());
+app.use(cors());
 app.use("/uploads", express.static("uploads"));
 
 bootstrap(app);

@@ -1,18 +1,17 @@
-import { json } from 'express';
-import cors from "cors";
 import { dbConnection } from '../../database/dbConnection.js';
 import { AppError } from '../utils/catchError.js';
 import { globalError } from '../utils/globalError.js';
 import * as allRouters from './index.js'
+import { scheduleUserCleanup } from "../utils/cleanup-jobs.js";
 
 export const bootstrap = (app) => {
   process.on("uncaughtException", (err) => {
     console.log("ERROR in code: ", err);
   });
 
-  app.use(json());
-  app.use(cors());
   dbConnection();
+
+  scheduleUserCleanup();
 
   app.use("/api/auth", allRouters.authRouter);
   app.use("/api/admin", allRouters.adminRouter);
