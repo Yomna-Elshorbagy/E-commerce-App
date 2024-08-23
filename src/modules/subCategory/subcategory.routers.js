@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as subCategoryControllers from "./subCategory.controllers.js";
+import * as subCategoryControllers from "./subcategory.controllers.js";
 import { validate } from "../../middelwares/validate.js";
 import { addSubcategoryVal } from "./subcategory.validation.js";
 // import { uploadSingleFile } from "../../utils/fileUpload/multer.js";
