@@ -16,5 +16,5 @@ export const globalError = async (err , req, res ,next)=>{
         message: err.message , 
         code ,
         sucess: false, 
-        stack: err.stack});
+        });
 };

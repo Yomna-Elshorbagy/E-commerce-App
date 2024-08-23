@@ -1,15 +1,11 @@
+import Stripe from "stripe";
 import Cart from "../../../database/models/cart.model.js";
 import Coupon from "../../../database/models/coupon.model.js";
 import Order from "../../../database/models/order.model.js";
 import Product from "../../../database/models/product.model.js";
 import { AppError, catchAsyncError } from "../../utils/catchError.js";
-import {
-  couponTypes,
-  orderStatus,
-  payments,
-} from "../../utils/constant/enums.js";
+import { couponTypes, orderStatus, payments } from "../../utils/constant/enums.js";
 import { messages } from "../../utils/constant/messages.js";
-import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // create order from cart
